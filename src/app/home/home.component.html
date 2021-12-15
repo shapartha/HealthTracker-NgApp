@@ -1,0 +1,22 @@
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"><i class="me-3 bi bi-shop" style="font-size: 2rem; color: orange;"></i></a>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li class="header-tabs" *ngFor="let item of appConst.HOME_TABS; let i = index;">
+                    <a href="#" class="nav-link px-2" [ngClass]="(currentTab === item) ? 'text-white' : 'text-secondary'">{{item}}</a>
+                </li>
+            </ul>
+            <div class="text-end">
+                <button type="button" class="btn btn-warning" (click)="appService.handleTabChange('logout')">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <form class="form-add-record">
+            <h1 class="h3 mb-3 fw-normal center-align-val">Add New <u>Blood Pressure</u> Record</h1>
+        </form>
+    </div>
+</main>
