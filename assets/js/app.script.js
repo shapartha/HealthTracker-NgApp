@@ -7,3 +7,11 @@ function addDataSection(toggleMode) {
         addBtnSec.click();
     }
 }
+
+function hideModal(modalId) {
+    var myModalEl = document.getElementById(modalId);
+    var modal = bootstrap.Modal.getInstance(myModalEl);
+    if (modal) {
+        modal.hide();
+    }
+}

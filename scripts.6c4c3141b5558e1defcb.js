@@ -1,0 +1,1 @@
+function addDataSection(t){var e=document.getElementById("add-data-section-btn");"HIDE"===t?e.style.display="none":(e.style.display="inline-block",e.click())}function hideModal(t){var e=document.getElementById(t),n=bootstrap.Modal.getInstance(e);n&&n.hide()}

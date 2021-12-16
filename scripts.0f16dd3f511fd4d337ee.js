@@ -1,1 +1,0 @@
-function addDataSection(n){var t=document.getElementById("add-data-section-btn");"HIDE"===n?t.style.display="none":(t.style.display="inline-block",t.click())}
