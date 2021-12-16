@@ -12,6 +12,12 @@ body {
 .darkgreen-val {
     color: darkgreen;
 }
+.orange-val {
+    color: orange;
+}
+.red-val {
+    color: red;
+}
 .right-align-val {
     text-align: right;
 }
@@ -21,6 +27,15 @@ body {
 .font12-val {
     font-size: 12px;
 }
+.margin-right-10 {
+    margin-right: 10px;
+}
+.margin-auto {
+    margin: auto;
+}
+.w-33 {
+    width: 33% !important;
+}
 #loader-container {
     position: absolute;
     width: 100%;
@@ -29,7 +44,18 @@ body {
     background: white;
     opacity: 0.8;
 }
-
+.h5, h5 {
+    font-size: 1.25rem !important;
+}
+.h6, h6 {
+    font-size: 1rem !important;
+}
+.xx-large-font {
+    font-size: xx-large;
+}
+.x-large-font {
+    font-size: x-large;
+}
 .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
@@ -44,6 +70,15 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 100px;
+}
+.mat-form-field-infix {
+    width: 250px !important;
+}
+.cdk-overlay-container {
+    z-index: 1100;
+}
+a {
+    cursor: pointer !important;
 }
 
 @-webkit-keyframes spin {

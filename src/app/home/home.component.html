@@ -4,7 +4,7 @@
             <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"><i class="me-3 bi bi-shop" style="font-size: 2rem; color: orange;"></i></a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li class="header-tabs" *ngFor="let item of appConst.HOME_TABS; let i = index;">
-                    <a href="#" class="nav-link px-2" [ngClass]="(currentTab === item) ? 'text-white' : 'text-secondary'">{{item}}</a>
+                    <a href="{{ item.path }}" class="nav-link px-2" [ngClass]="(currentTab === item.name) ? 'text-white' : 'text-secondary'">{{item.name}}</a>
                 </li>
             </ul>
             <div class="text-end">
@@ -15,8 +15,136 @@
 </header>
 <main>
     <div class="container">
-        <form class="form-add-record">
-            <h1 class="h3 mb-3 fw-normal center-align-val">Add New <u>Blood Pressure</u> Record</h1>
-        </form>
+        <p id="add-data-section" class="center-align-val">
+            <button id="add-data-section-btn" class="btn btn-success" (click)="onAddDataSection()" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+              Add New Record
+            </button>
+        </p>
+        <div class="collapse" id="collapseForm">
+            <form class="form-add-record center-align-val" (submit) = "submitData()">
+                <h2 class="h3 mb-3 fw-normal">Add New <u>Blood Pressure</u> Record</h2>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <mat-label>Systolic (sys):</mat-label>
+                    <input type="number" min="0" matInput placeholder="Systolic (SYS)" name="sys" required [(ngModel)]="bpData.sys">
+                    <mat-error *ngIf="bpData.sys == null || bpData.sys == undefined">
+                        Valid Systolic value required.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <mat-label>Diastolic (dia):</mat-label>
+                    <input type="number" min="0" matInput placeholder="Diastolic (DIA)" name="dia" required [(ngModel)]="bpData.dia">
+                    <mat-error *ngIf="bpData.dia == null || bpData.dia == undefined">
+                        Valid Diastolic value required.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <mat-label>Pulse:</mat-label>
+                    <input type="number" min="0" matInput placeholder="Pulse" name="pulse" required [(ngModel)]="bpData.pulse">
+                    <mat-error *ngIf="bpData.pulse == null || bpData.pulse == undefined">
+                        Valid Pulse value required.
+                    </mat-error>
+                </mat-form-field>
+                <div>
+                    <button class="w-33 btn btn-sm btn-primary" type="submit">Save</button>
+                    <button class="w-33 btn btn-sm btn-warning" type="reset">Cancel</button>
+                    <button class="w-33 btn btn-sm btn-secondary" type="button" (click)="onAddDataSection('SHOW')">Close</button>
+                </div>
+            </form>
+        </div>
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action d-flex gap-3 py-3" *ngFor="let item of bpDataList; let i = index;" aria-current="true">
+                <i class="bi xx-large-font margin-auto" [ngClass]="getClassVal(item)"></i>
+                <div class="d-flex gap-2 w-100 justify-content-between center-align-val" data-bs-toggle="modal" data-bs-target="#updateModal" (click)="populateForModal(item)">
+                    <div class="margin-auto">
+                        <h6 class="mb-0">SYS</h6>
+                        <p class="mb-0 opacity-75 x-large-font bold-val">{{item.systolic}}</p>
+                    </div>
+                    <div class="margin-auto">
+                        <h6 class="mb-0">DIA</h6>
+                        <p class="mb-0 opacity-75 x-large-font bold-val">{{item.diastolic}}</p>
+                    </div>
+                    <div class="margin-auto">
+                        <h6 class="mb-0">Pulse</h6>
+                        <p class="mb-0 opacity-75 x-large-font bold-val">{{item.pulse}}</p>
+                    </div>
+                    <div class="margin-auto">
+                        <h6 class="mb-0">Time</h6>
+                        <p class="mb-0 opacity-75 bold-val">{{ appService.formatDate(appService.convertDate(item.record_date)) }}</p>
+                    </div>
+                </div>
+                <i class="bi bi-trash-fill xx-large-font margin-auto" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="populateForModal(item)"></i>
+            </a>
+        </div>
     </div>
 </main>
+  
+<!-- Modal -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this record ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" (click)="deleteData()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-update-record center-align-val">
+                    <mat-form-field appearance="fill" class="margin-right-10">
+                        <mat-label>Systolic (sys):</mat-label>
+                        <input type="number" min="0" matInput placeholder="Systolic (SYS)" name="sys" required [(ngModel)]="updateBpData.systolic">
+                        <mat-error *ngIf="updateBpData.sys == null || updateBpData.sys == undefined">
+                            Valid Systolic value required.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="margin-right-10">
+                        <mat-label>Diastolic (dia):</mat-label>
+                        <input type="number" min="0" matInput placeholder="Diastolic (DIA)" name="dia" required [(ngModel)]="updateBpData.diastolic">
+                        <mat-error *ngIf="updateBpData.dia == null || updateBpData.dia == undefined">
+                            Valid Diastolic value required.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="margin-right-10">
+                        <mat-label>Pulse:</mat-label>
+                        <input type="number" min="0" matInput placeholder="Pulse" name="pulse" required [(ngModel)]="updateBpData.pulse">
+                        <mat-error *ngIf="updateBpData.pulse == null || updateBpData.pulse == undefined">
+                            Valid Pulse value required.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" name="record_date" [(ngModel)]="updateBpData.record_date">
+                        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                            <ng-template>
+                                <span>OK</span>
+                            </ng-template>
+                        </ngx-mat-datetime-picker>
+                        <mat-error *ngIf="updateBpData.record_date == null || updateBpData.record_date == undefined">
+                            Valid Date value required.
+                        </mat-error>
+                     </mat-form-field>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="updateData()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

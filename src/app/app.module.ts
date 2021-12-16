@@ -7,12 +7,18 @@ import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppInterceptor } from './app.interceptor';
 import { AuthService } from './auth.service';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { LogoutComponent } from './logout/logout.component';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
@@ -23,8 +29,8 @@ import { LogoutComponent } from './logout/logout.component';
     LogoutComponent
   ],
   imports: [
-    BrowserModule, MatSnackBarModule, HttpClientModule,
-    AppRoutingModule, FormsModule,
+    BrowserModule, MatSnackBarModule, HttpClientModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
+    AppRoutingModule, FormsModule, NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule, MatNativeDateModule,
     BrowserAnimationsModule
   ],
   providers: [
