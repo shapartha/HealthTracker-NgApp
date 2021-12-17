@@ -1,0 +1,174 @@
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"><i class="me-3 bi bi-shop" style="font-size: 2rem; color: orange;"></i></a>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li class="header-tabs" *ngFor="let item of appConst.HOME_TABS; let i = index;">
+                    <a href="{{ item.path }}" class="nav-link px-2" [ngClass]="(currentTab === item.name) ? 'text-white' : 'text-secondary'">{{item.name}}</a>
+                </li>
+            </ul>
+            <div class="text-end">
+                <button type="button" class="btn btn-warning" (click)="appService.handleTabChange('logout')">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <p id="add-data-section" class="center-align-val">
+            <button id="add-data-section-btn" class="btn btn-success" (click)="onAddDataSection()" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+              Add New Record
+            </button>
+        </p>
+        <div class="collapse" id="collapseForm">
+            <form class="form-add-record center-align-val" (submit) = "submitData()">
+                <h2 class="h3 mb-3 fw-normal">Add New <u>Blood Sugar</u> Record</h2>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <mat-label>Fasting:</mat-label>
+                    <input type="number" min="0" matInput placeholder="Fasting" name="fasting" [(ngModel)]="bsData.fbs">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <mat-label>Postprandial (PP):</mat-label>
+                    <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="pp" [(ngModel)]="bsData.postprandial">
+                </mat-form-field>
+                <div>
+                    <button class="w-33 btn btn-sm btn-primary" type="submit">Save</button>
+                    <button class="w-33 btn btn-sm btn-warning" type="reset">Cancel</button>
+                    <button class="w-33 btn btn-sm btn-secondary" type="button" (click)="onAddDataSection('SHOW')">Close</button>
+                </div>
+            </form>
+        </div>
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action d-flex gap-3 py-3" *ngFor="let item of bsDataList; let i = index;" aria-current="true">
+                <i class="bi xx-large-font margin-auto" [ngClass]="getClassVal(item)"></i>
+                <div class="d-flex gap-2 w-100 justify-content-between center-align-val" data-bs-toggle="modal" data-bs-target="#updateModal" (click)="populateForModal(item)">
+                    <ng-container *ngIf="item.fbs === '0'">
+                        <div class="margin-auto w-50">
+                            <button class="btn btn-sm btn-primary w-75" type="button" (click)="addFbsOrPP('FBS')">Add FBS</button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="item.fbs !== '0'">
+                        <div class="margin-auto w-25">
+                            <h6 class="mb-0">FBS</h6>
+                            <p class="mb-0 opacity-75 x-large-font bold-val">{{item.fbs}}</p>
+                        </div>
+                        <div class="margin-auto w-25">
+                            <h6 class="mb-0">FBS Time</h6>
+                            <p class="mb-0 opacity-75 bold-val">{{ appService.formatDate(appService.convertDate(item.record_date_fst)) }}</p>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="item.postprandial === '0'">
+                        <div class="margin-auto w-50">
+                            <button class="btn btn-sm btn-primary w-75" type="button" (click)="addFbsOrPP('PP')">Add PP</button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="item.postprandial !== '0'">
+                        <div class="margin-auto w-25">
+                            <h6 class="mb-0">PP</h6>
+                            <p class="mb-0 opacity-75 x-large-font bold-val">{{item.postprandial}}</p>
+                        </div>
+                        <div class="margin-auto w-25">
+                            <h6 class="mb-0">PP Time</h6>
+                            <p class="mb-0 opacity-75 bold-val">{{ appService.formatDate(appService.convertDate(item.record_date_pp)) }}</p>
+                        </div>
+                    </ng-container>
+                </div>
+                <i class="bi bi-trash-fill xx-large-font margin-auto" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="populateForModal(item)"></i>
+            </a>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this record ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" (click)="deleteData()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-update-record center-align-val">
+                    <ng-container *ngIf="updateBsData.isAddFbs">
+                        <mat-form-field appearance="fill" class="margin-right-10">
+                            <mat-label>Fasting (FBS):</mat-label>
+                            <input type="number" min="0" matInput placeholder="Fasting (FBS)" name="fbs" [(ngModel)]="updateBsData.fbs">
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="updateBsData.isAddPp">
+                        <mat-form-field appearance="fill" class="margin-right-10">
+                            <mat-label>Postprandial (PP):</mat-label>
+                            <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="postprandial" [(ngModel)]="updateBsData.postprandial">
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="!updateBsData.isAddFbs && !updateBsData.isAddPp">
+                        <mat-form-field appearance="fill" class="margin-right-10">
+                            <mat-label>Fasting (FBS):</mat-label>
+                            <input type="number" min="0" matInput placeholder="Fasting (FBS)" name="fbs" [(ngModel)]="updateBsData.fbs">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" name="record_date_fst" [(ngModel)]="updateBsData.record_date_fst">
+                            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                                <ng-template>
+                                    <span>OK</span>
+                                </ng-template>
+                            </ngx-mat-datetime-picker>
+                            <mat-error *ngIf="updateBsData.record_date_fst == null || updateBsData.record_date_fst == undefined">
+                                Valid Date value required.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="margin-right-10">
+                            <mat-label>Postprandial (PP):</mat-label>
+                            <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="postprandial" [(ngModel)]="updateBsData.postprandial">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Choose a date" name="record_date_pp" [(ngModel)]="updateBsData.record_date_pp">
+                            <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                                <ng-template>
+                                    <span>OK</span>
+                                </ng-template>
+                            </ngx-mat-datetime-picker>
+                            <mat-error *ngIf="updateBsData.record_date_pp == null || updateBsData.record_date_pp == undefined">
+                                Valid Date value required.
+                            </mat-error>
+                        </mat-form-field>
+                    </ng-container>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <ng-container *ngIf="!updateBsData.isAddFbs && !updateBsData.isAddPp">
+                    <button type="button" class="btn btn-primary" (click)="updateData()">Save changes</button>
+                </ng-container>
+                <ng-container *ngIf="updateBsData.isAddFbs">
+                    <button type="button" class="btn btn-primary" (click)="saveFbsOrPp('FBS')">Add FBS</button>
+                </ng-container>
+                <ng-container *ngIf="updateBsData.isAddPp">
+                    <button type="button" class="btn btn-primary" (click)="saveFbsOrPp('PP')">Add PP</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

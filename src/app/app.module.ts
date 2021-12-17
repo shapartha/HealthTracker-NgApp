@@ -18,6 +18,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { BloodSugarComponent } from './blood-sugar/blood-sugar.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     LoginComponent,
     ErrorComponent,
     HomeComponent,
-    LogoutComponent
+    LogoutComponent,
+    BloodSugarComponent
   ],
   imports: [
     BrowserModule, MatSnackBarModule, HttpClientModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,

@@ -101,6 +101,66 @@ export class AppConstant {
             ]
         }
     };
+    static BLOOD_SUGAR_VALUE = {
+        GOOD : {
+            FBS: [
+                {
+                    HIGH: 120,
+                    LOW: 80
+                }
+            ],
+            PP: [
+                {
+                    HIGH: 140,
+                    LOW: 110
+                }
+            ]
+        },
+        AVG : {
+            FBS: [
+                {
+                    HIGH: 150,
+                    LOW: 121
+                },
+                {
+                    HIGH: 79,
+                    LOW: 70
+                }
+            ],
+            PP: [
+                {
+                    HIGH: 169,
+                    LOW: 141
+                },
+                {
+                    HIGH: 109,
+                    LOW: 80
+                }
+            ]
+        },
+        BAD : {
+            FBS: [
+                {
+                    HIGH: 999,
+                    LOW: 151
+                },
+                {
+                    HIGH: 69,
+                    LOW: 0
+                }
+            ],
+            PP: [
+                {
+                    HIGH: 999,
+                    LOW: 170
+                },
+                {
+                    HIGH: 79,
+                    LOW: 0
+                }
+            ]
+        }
+    };
 
     constructor() {
         this.HOME_TABS = [
