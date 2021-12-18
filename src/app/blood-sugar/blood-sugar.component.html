@@ -122,11 +122,11 @@
                         </mat-form-field>
                     </ng-container>
                     <ng-container *ngIf="!updateBsData.isAddFbs && !updateBsData.isAddPp">
-                        <mat-form-field appearance="fill" class="margin-right-10">
+                        <mat-form-field appearance="fill" class="margin-right-10" *ngIf="updateBsData.fbs !== 0 && updateBsData.fbs !== '0'">
                             <mat-label>Fasting (FBS):</mat-label>
                             <input type="number" min="0" matInput placeholder="Fasting (FBS)" name="fbs" [(ngModel)]="updateBsData.fbs">
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field *ngIf="updateBsData.fbs !== 0 && updateBsData.fbs !== '0'">
                             <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" name="record_date_fst" [(ngModel)]="updateBsData.record_date_fst">
                             <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                             <ngx-mat-datetime-picker #picker [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
@@ -138,14 +138,14 @@
                                 Valid Date value required.
                             </mat-error>
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="margin-right-10">
+                        <mat-form-field appearance="fill" class="margin-right-10" *ngIf="updateBsData.postprandial !== 0 && updateBsData.postprandial !== '0'">
                             <mat-label>Postprandial (PP):</mat-label>
                             <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="postprandial" [(ngModel)]="updateBsData.postprandial">
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field *ngIf="updateBsData.postprandial !== 0 && updateBsData.postprandial !== '0'">
                             <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Choose a date" name="record_date_pp" [(ngModel)]="updateBsData.record_date_pp">
                             <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
-                            <ngx-mat-datetime-picker #picker [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                            <ngx-mat-datetime-picker #picker2 [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
                                 <ng-template>
                                     <span>OK</span>
                                 </ng-template>

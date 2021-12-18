@@ -87,8 +87,10 @@ export class BloodSugarComponent implements OnInit {
   }
 
   async updateData() {
-    if (this.updateBsData.fbs === undefined || this.updateBsData.fbs === null || Number(this.updateBsData.fbs) === 0 || 
-      this.updateBsData.postprandial === null || this.updateBsData.postprandial === undefined || Number(this.updateBsData.postprandial) === 0 || 
+    let oldFbs = this.bsDataList.filter(bs => bs.record_id === this.updateBsData.record_id)[0].fbs;
+    let oldPp = this.bsDataList.filter(bs => bs.record_id === this.updateBsData.record_id)[0].postprandial;
+    if (((this.updateBsData.fbs === undefined || this.updateBsData.fbs === null || Number(this.updateBsData.fbs) === 0) && Number(oldFbs) !== 0) || 
+      ((this.updateBsData.postprandial === null || this.updateBsData.postprandial === undefined || Number(this.updateBsData.postprandial) === 0) && Number(oldPp) !== 0) || 
       this.updateBsData.record_date_fst === undefined || this.updateBsData.record_date_fst === null || 
       this.updateBsData.record_date_pp === undefined || this.updateBsData.record_date_pp === null) {
         this.appService.showAlert("All the fields are mandatory. Do not leave any field empty or blank.");

@@ -20,6 +20,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.appService.getAppToken == "") {
+      this.appService.invokeTokenCall();
+    }
     this.appService.hideLoader(); 
   }
 
