@@ -269,12 +269,20 @@ export class AppService {
       let avgPpVals = constVal.AVG.PP;
       var fbsRes = -1, ppRes = -1;
       for (let i = 0; i < goodFbsVals.length; i++) {
+            if (fbs == 0) {
+                fbsRes = 1;
+                break;
+            }
             if (fbs <= goodFbsVals[i].HIGH && fbs >= goodFbsVals[i].LOW) {
                 fbsRes = 1;
                 break;
             }
       }
       for (let i = 0; i < goodPpVals.length; i++) {
+            if (pp == 0) {
+                ppRes = 1;
+                break;
+            }
             if (pp <= goodPpVals[i].HIGH && pp >= goodPpVals[i].LOW) {
                 ppRes = 1;
                 break;
