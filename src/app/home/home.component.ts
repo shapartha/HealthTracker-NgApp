@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   bpData: any = {};
   updateBpData: any = {};
   bpDataList: any[] = [];
+  appVersionInfo: string = this.appConst.APP_VERSION;
 
   constructor(public appService: AppService) { }
 
