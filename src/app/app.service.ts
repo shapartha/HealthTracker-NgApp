@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class AppService {
   
-    apiServerUrl: string = "https://shapartha-android-zone.000webhostapp.com/healthtracker/api/";
+    apiServerUrl: string = "https://shapartha.online/healthtracker/api/";
     API_GET_TOKEN: string = "getToken";
     static API_KEY: string = "d7e1a3d7dd2a43a4";
     appToken: string = "";
