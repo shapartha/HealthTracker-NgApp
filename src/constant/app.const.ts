@@ -1,5 +1,5 @@
 export class AppConstant {
-    APP_VERSION: string = "3.0.180623";
+    APP_VERSION: string = "3.0.220724";
     static RUPEE_SYMBOL: string = "₹";
     static MONTH: any = {
         1: "Jan",
