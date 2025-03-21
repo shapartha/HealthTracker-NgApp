@@ -27,9 +27,33 @@
                     <mat-label>Fasting:</mat-label>
                     <input type="number" min="0" matInput placeholder="Fasting" name="fasting" [(ngModel)]="bsData.fbs">
                 </mat-form-field>
+                <mat-form-field *ngIf="bsData.fbs !== 0 && bsData.fbs !== '0'">
+                    <input matInput [ngxMatDatetimePicker]="pickerA" placeholder="Choose a date" name="record_date_fst" [(ngModel)]="bsData.record_date_fst">
+                    <mat-datepicker-toggle matSuffix [for]="$any(pickerA)"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #pickerA [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                        <ng-template>
+                            <span>OK</span>
+                        </ng-template>
+                    </ngx-mat-datetime-picker>
+                    <mat-error *ngIf="bsData.record_date_fst == null || bsData.record_date_fst == undefined">
+                        Valid Date value required.
+                    </mat-error>
+                </mat-form-field>
                 <mat-form-field appearance="fill" class="margin-right-10">
                     <mat-label>Postprandial (PP):</mat-label>
                     <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="pp" [(ngModel)]="bsData.postprandial">
+                </mat-form-field>
+                <mat-form-field *ngIf="bsData.postprandial !== 0 && bsData.postprandial !== '0'">
+                    <input matInput [ngxMatDatetimePicker]="pickerA2" placeholder="Choose a date" name="record_date_pp" [(ngModel)]="bsData.record_date_pp">
+                    <mat-datepicker-toggle matSuffix [for]="$any(pickerA2)"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #pickerA2 [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                        <ng-template>
+                            <span>OK</span>
+                        </ng-template>
+                    </ngx-mat-datetime-picker>
+                    <mat-error *ngIf="bsData.record_date_pp == null || bsData.record_date_pp == undefined">
+                        Valid Date value required.
+                    </mat-error>
                 </mat-form-field>
                 <div>
                     <button class="w-33 btn btn-sm btn-primary" type="submit">Save</button>
@@ -94,7 +118,7 @@
                 Are you sure to delete this record ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="close-delete-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" (click)="deleteData()">Delete</button>
             </div>
         </div>
@@ -114,11 +138,35 @@
                             <mat-label>Fasting (FBS):</mat-label>
                             <input type="number" min="0" matInput placeholder="Fasting (FBS)" name="fbs" [(ngModel)]="updateBsData.fbs">
                         </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [ngxMatDatetimePicker]="pickerB" placeholder="Choose a date" name="record_date_fst" [(ngModel)]="updateBsData.record_date_fst">
+                            <mat-datepicker-toggle matSuffix [for]="$any(pickerB)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #pickerB [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                                <ng-template>
+                                    <span>OK</span>
+                                </ng-template>
+                            </ngx-mat-datetime-picker>
+                            <mat-error *ngIf="updateBsData.record_date_fst == null || updateBsData.record_date_fst == undefined">
+                                Valid Date value required.
+                            </mat-error>
+                        </mat-form-field>
                     </ng-container>
                     <ng-container *ngIf="updateBsData.isAddPp">
                         <mat-form-field appearance="fill" class="margin-right-10">
                             <mat-label>Postprandial (PP):</mat-label>
                             <input type="number" min="0" matInput placeholder="Postprandial (PP)" name="postprandial" [(ngModel)]="updateBsData.postprandial">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [ngxMatDatetimePicker]="pickerB2" placeholder="Choose a date" name="record_date_pp" [(ngModel)]="updateBsData.record_date_pp">
+                            <mat-datepicker-toggle matSuffix [for]="$any(pickerB2)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #pickerB2 [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                                <ng-template>
+                                    <span>OK</span>
+                                </ng-template>
+                            </ngx-mat-datetime-picker>
+                            <mat-error *ngIf="updateBsData.record_date_pp == null || updateBsData.record_date_pp == undefined">
+                                Valid Date value required.
+                            </mat-error>
                         </mat-form-field>
                     </ng-container>
                     <ng-container *ngIf="!updateBsData.isAddFbs && !updateBsData.isAddPp">
@@ -158,7 +206,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="close-update-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <ng-container *ngIf="!updateBsData.isAddFbs && !updateBsData.isAddPp">
                     <button type="button" class="btn btn-primary" (click)="updateData()">Save changes</button>
                 </ng-container>

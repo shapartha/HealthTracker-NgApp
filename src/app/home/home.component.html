@@ -44,6 +44,18 @@
                         Valid Pulse value required.
                     </mat-error>
                 </mat-form-field>
+                <mat-form-field appearance="fill" class="margin-right-10">
+                    <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Choose a date" name="record_date" required [(ngModel)]="bpData.record_date">
+                    <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker2 [showSeconds]="dt_showSeconds" [touchUi]="dt_touchUi" [color]="dt_color">
+                        <ng-template>
+                            <span>OK</span>
+                        </ng-template>
+                    </ngx-mat-datetime-picker>
+                    <mat-error *ngIf="bpData.record_date == null || bpData.record_date == undefined">
+                        Valid Date value required.
+                    </mat-error>
+                 </mat-form-field>
                 <div>
                     <button class="w-33 btn btn-sm btn-primary" type="submit">Save</button>
                     <button class="w-33 btn btn-sm btn-warning" type="reset">Cancel</button>
@@ -96,7 +108,7 @@
                 Are you sure to delete this record ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="close-delete-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" (click)="deleteData()">Delete</button>
             </div>
         </div>
@@ -147,7 +159,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="close-update-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" (click)="updateData()">Save changes</button>
             </div>
         </div>

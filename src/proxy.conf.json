@@ -1,7 +1,0 @@
-{
-    "/ext-api/*": {
-        "target": "https://shapartha.infinityfreeapp.com/healthtracker/api/",
-        "secure": true,
-        "logLevel": "debug"
-    }
-}

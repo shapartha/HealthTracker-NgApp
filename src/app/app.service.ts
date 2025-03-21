@@ -5,13 +5,13 @@ import { Router } from '@angular/router';
 import { AppConstant } from 'src/constant/app.const';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { v4 as uuidv4 } from 'uuid';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
   
-    apiServerUrl: string = "https://shapartha.infinityfreeapp.com/healthtracker/api/";
     API_GET_TOKEN: string = "getToken";
     static API_KEY: string = "d7e1a3d7dd2a43a4";
     appToken: string = "";
@@ -424,6 +424,16 @@ export class AppService {
         return Number(resp);
     }
 
+    addDataSection(toggleMode: string) {
+        var addBtnSec = document.getElementById('add-data-section-btn');
+        if (toggleMode === 'HIDE') {
+            addBtnSec!.style.display = 'none';
+        } else {
+            addBtnSec!.style.display = 'inline-block';
+            addBtnSec!.click();
+        }
+    }
+
     /**
      * HTTP REST API Calls start from here
      * 
@@ -437,7 +447,7 @@ export class AppService {
 
     getToken(apiFuncParams: any): Observable<any> {
         let apiFuncName = this.API_GET_TOKEN;
-        return this.http.get<any>(this.apiServerUrl + "?apiFunctionName=" + encodeURIComponent(apiFuncName) + "&apiFunctionParams=" + encodeURIComponent(JSON.stringify(apiFuncParams)));
+        return this.http.get<any>(environment.apiServerUrl + "?apiFunctionName=" + encodeURIComponent(apiFuncName) + "&apiFunctionParams=" + encodeURIComponent(JSON.stringify(apiFuncParams)));
     }
 
     loginUser(apiFuncParams: any) {
@@ -482,7 +492,7 @@ export class AppService {
             'accept': 'application/json'
         };
         let promise = new Promise((resolve, reject) => {
-            this.http.post(this.apiServerUrl, "apiFunctionName=" + encodeURIComponent(apiFuncName) + "&apiFunctionParams=" + encodeURIComponent(JSON.stringify(apiFuncParams)) + this.appendMandatoryParams(),
+            this.http.post(environment.apiServerUrl, "apiFunctionName=" + encodeURIComponent(apiFuncName) + "&apiFunctionParams=" + encodeURIComponent(JSON.stringify(apiFuncParams)) + this.appendMandatoryParams(),
             {'headers': headers}).toPromise()
             .then(resp => {
                 resolve(resp);

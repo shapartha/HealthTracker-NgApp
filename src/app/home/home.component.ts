@@ -3,8 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { AppConstant } from 'src/constant/app.const';
 import { AppService } from '../app.service';
 
-declare function addDataSection(toggleMode: string): any;
-declare function hideModal(updateModal: string): any;
+// declare function hideModal(updateModal: string): any;
 
 @Component({
   selector: 'app-home',
@@ -14,6 +13,8 @@ declare function hideModal(updateModal: string): any;
 export class HomeComponent implements OnInit {
 
   @ViewChild('picker') picker: any;
+  @ViewChild('picker2') picker2: any;
+
   public dt_showSeconds = true;
   public dt_touchUi = true;
   public dt_color: ThemePalette = 'accent';
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
   constructor(public appService: AppService) { }
 
   async loadBpData() {
+    this.bpData.record_date = new Date();
     const bpDataResp = await this.appService.getBpRecords({ user_id: this.appService.getAppUserId });
     if (bpDataResp.success === true) {
       if (bpDataResp.response === '200') {
@@ -73,20 +75,20 @@ export class HomeComponent implements OnInit {
 
   onAddDataSection(toggleMode: string = 'HIDE') {
     if (toggleMode === 'HIDE' && !this._hasToggled) {
-      addDataSection(toggleMode);
+      this.appService.addDataSection(toggleMode);
     } else if (toggleMode === 'SHOW') {
       this._hasToggled = true;
-      addDataSection(toggleMode);
+      this.appService.addDataSection(toggleMode);
     } else {
       this._hasToggled = false;
     }
   }
 
   async submitData() {
-    if (this.bpData.sys === undefined || this.bpData.sys === null || this.bpData.dia === undefined || 
-      this.bpData.dia === null || this.bpData.pulse === undefined || this.bpData.pulse === null ) {
-        this.appService.showAlert("All the fields are mandatory. Do not leave any field empty or blank.");
-        return;
+    if (this.bpData.sys === undefined || this.bpData.sys === null || this.bpData.dia === undefined ||
+      this.bpData.dia === null || this.bpData.pulse === undefined || this.bpData.pulse === null || this.bpData.record_date === undefined || this.bpData.record_date === null) {
+      this.appService.showAlert("All the fields are mandatory. Do not leave any field empty or blank.");
+      return;
     }
     this.appService.showLoader();
     let inpData = {
@@ -95,14 +97,14 @@ export class HomeComponent implements OnInit {
       pulse: this.bpData.pulse,
       check_sum: this.appService.generateUUID(),
       user_id: this.appService.getAppUserId,
-      record_date: this.appService.convertDateForSQL()
+      record_date: this.bpData.record_date
     }
     const saveBpResp = await this.appService.saveBpRecord(inpData);
     if (saveBpResp.success === true) {
       this.onAddDataSection('SHOW');
       this.appService.showAlert("Record Added Successfully");
-      this.bpDataList.unshift(inpData);
       this.bpData = {};
+      this.loadBpData();
     }
     this.appService.hideLoader();
   }
@@ -118,11 +120,11 @@ export class HomeComponent implements OnInit {
   }
 
   async updateData() {
-    if (this.updateBpData.systolic === undefined || this.updateBpData.systolic === null || this.updateBpData.diastolic === undefined || 
-      this.updateBpData.diastolic === null || this.updateBpData.pulse === undefined || this.updateBpData.pulse === null || 
+    if (this.updateBpData.systolic === undefined || this.updateBpData.systolic === null || this.updateBpData.diastolic === undefined ||
+      this.updateBpData.diastolic === null || this.updateBpData.pulse === undefined || this.updateBpData.pulse === null ||
       this.updateBpData.record_date === undefined || this.updateBpData.record_date === null) {
-        this.appService.showAlert("All the fields are mandatory. Do not leave any field empty or blank.");
-        return;
+      this.appService.showAlert("All the fields are mandatory. Do not leave any field empty or blank.");
+      return;
     }
     this.updateBpData.record_date = this.appService.convertDateForSQL(this.updateBpData.record_date);
     this.appService.showLoader();
@@ -135,7 +137,8 @@ export class HomeComponent implements OnInit {
       updRecord.pulse = this.updateBpData.pulse;
       updRecord.record_date = this.updateBpData.record_date;
       this.updateBpData = {};
-      hideModal('updateModal');
+      var closeBtn = document.getElementById('close-update-btn');
+      closeBtn!.click();
     } else {
       this.appService.showAlert(updateBpResp);
     }
@@ -150,7 +153,8 @@ export class HomeComponent implements OnInit {
       let dltRecordIdx = this.bpDataList.findIndex(bp => bp.record_id === this.updateBpData.record_id);
       this.bpDataList.splice(dltRecordIdx, 1);
       this.updateBpData = {};
-      hideModal('deleteModal');
+      var closeBtn = document.getElementById('close-delete-btn');
+      closeBtn!.click();
     } else {
       this.appService.showAlert(deleteBpResp);
     }

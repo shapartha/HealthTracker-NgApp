@@ -112,7 +112,7 @@ export class AppConstant {
             ],
             PP: [
                 {
-                    HIGH: 140,
+                    HIGH: 160,
                     LOW: 110
                 }
             ]
@@ -125,13 +125,13 @@ export class AppConstant {
                 },
                 {
                     HIGH: 79,
-                    LOW: 70
+                    LOW: 65
                 }
             ],
             PP: [
                 {
-                    HIGH: 169,
-                    LOW: 141
+                    HIGH: 199,
+                    LOW: 161
                 },
                 {
                     HIGH: 109,
@@ -146,14 +146,14 @@ export class AppConstant {
                     LOW: 151
                 },
                 {
-                    HIGH: 69,
+                    HIGH: 64,
                     LOW: 0
                 }
             ],
             PP: [
                 {
                     HIGH: 999,
-                    LOW: 170
+                    LOW: 200
                 },
                 {
                     HIGH: 79,
